@@ -1,0 +1,62 @@
+0. How many different colors does each format support?
+    - GIF: 8-bit, 0xff colors
+    - PNG: 32-bit, 0xffffff colors and 0xff for alpha
+    - BMP: 24-bit, 0xffffff colors
+    - JPEG: 24-bit, 0xffffff colors
+
+1. Which of the formats supports animation?
+    - GIF
+
+2. What’s the difference between lossy and lossless compression?
+    - A lossy compression discards information in favour of a smaller file-size
+
+3. Which of these formats is lossy-compressed?
+    - GIF, JPEG
+
+4. What happens, technically speaking, when a file is deleted on a FAT file system?
+    - The space occupied by the file is marked as "available"
+
+5. What can someone like you do to ensure (with high probability) that files you delete cannot be recovered?
+    - Overwrite it with 0s; though I'm not sure about single files, as it would require me to keep track of where each part of that file was stored on a drive, and then go there to write the 0s. For the entire drive on the other hand, I'd simply overwrite all of it with zeroes.
+
+6. What is `stdint.h`?
+    - A C-library containing the *_t types used in bmp.h, e.g. uint16_t and int32_t.
+
+7. What’s the point of using uint8_t, uint32_t, int32_t, and uint16_t in a program?
+    - As opposed to just `int`? They each map a particular amount of bits the equivalent of bits occupied by the file format; leaving no gaps in memory once the file has been read.
+
+8. How many bytes is a BYTE, a DWORD, a LONG, and a WORD, respectively? (Assume a 32-bit architecture like the CS50 Appliance.)
+    - BYTE  = 1 byte (8-bit)
+    - DWORD = 4 bytes (32-bit)
+    - LONG  = 4 bytes (32-bit)
+    - WORD  = 2 bytes (16-bit)
+
+9. What (in ASCII, decimal, or hexadecimal) must the first two bytes of any BMP file be? (Leading bytes used to identify file formats (with high probability) are generally called "magic numbers.)"
+    - "BM" in ASCII encoding
+
+10. What’s the difference between bfSize and biSize?
+    - `bfSize` is the size of the whole file (all structs included) whereas `biSize` is the size of the BITMAPINFOHEADER structure.
+
+11. What does it mean if biHeight is negative?
+    - From the MSDN documentation, a negative `biHeight` indicates a top-down bitmap, and that (for some reason) it cannot be compressed.
+
+12. What field in BITMAPINFOHEADER specifies the BMP’s color depth (i.e., bits per pixel)?
+    - The `biBitCount` field.
+
+13. Why might fopen return NULL in copy.c:37?
+    - If creating the file fails; for example, due to permission or disk space issues.
+
+14. Why is the third argument to fread always 1 in our code?
+    - Because we are reading and writing 1 "element" at a time; where "element" is our structure.
+
+15. What value does copy.c:70 assign padding if bi.biWidth is 3?
+    - 3 (the RGBTRIPLE is 3).
+
+16. What does fseek do?
+    - Offsets reading till a particular byte in the file.
+
+17. What is SEEK_CUR?
+    - The "current position indicator". It's the starting point from which "seeking" should happen.
+
+18. Whodunit?
+    - Rob Bowden. (Originally answered "A young David J. Malan!" until the same picture was displayed in the Week 7 lecture. I still think it looks like him! :)

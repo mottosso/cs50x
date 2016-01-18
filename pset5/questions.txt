@@ -1,0 +1,32 @@
+0. What is pneumonoultramicroscopicsilicovolcanoconiosis?
+    - A word of the equivalent maximum length of the speller program
+
+1. According to its man page, what does getrusage do?
+    - Return resource usage measures for who.
+
+2. Per that same man page, how many members are in a variable of type struct rusage?
+    - 16
+
+3. Why do you think we pass before and after by reference (instead of by value) to calculate, even though we’re not changing their contents?
+    - To save time from otherwise copying the large structs.
+
+4. Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. In other words, convince us that you indeed understand how that function’s for loop works.
+    - Iterating over each character in a file, it builds sequences of characters based on whether they are consecutive alphabetical letters or whether they contain a combination of alphabetic letters and non-alphabetic letters; in which case they are skipped. For words longer than LENGTH, two or more words are produced such that each word is shorter than LENGTH. It also takes into account words with an appostrophe by only looking at the non-first character of a word.
+
+5. Why do you think we used fgetc to read each word’s characters one at a time rather than use fscanf with a format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying on fscanf alone?
+    - Reading character-by-character enabled you to handle corner-cases such as words including the '-character and skipping words with one or more number.
+
+6. Why do you think we declared the parameters for check and load as const?
+    - As they are given pointers, they could potentially alter the parameters. Const ensures this doesn't happen.
+
+7. What data structure(s) did you use to implement your spell-checker? Be sure not to leave your answer at just "hash table," "trie," or the like. Expound on what’s inside each of your "nodes."
+    - a hash table of pointers to nodes, each node containing the word (of size LENGTH + 1) and a pointer to the next node (making it a singly-linked list).
+
+8. How slow was your code the first time you got it working correctly?
+    - Over 300 seconds during load; now it is < 0.6 seconds on my machine, twice as fast as the provided solution.
+
+9. What kinds of changes, if any, did you make to your code in order to improve its performance?
+    - At first I truncated each word from the dictionary during load such that my node struct only contained a char* of an appropriate size, but later found that by hard-coding an upper limit (of LENGTH + 1) was much faster; albeit more memory hungry. I also trialed-and-errored the size of the hashtable, thinking that the fastest solution would be to have a table of 0 collisions, where words were immediately found without the need for traversing the contained linked lists, until discovering that the TOTAL time was increased due to the increase in time it took to zero-out the table upon malloccing it (calloc). The current size is as small and large as I could get it without increasing the TOTAL time of speller.
+
+10. Do you feel that your code has any bottlenecks that you were not able to chip away at?
+    - Yes, the file I/O. At the moment, a file is read line-by-line, which means a lot of file-system calls are made. A more performant solution would be to read the whole file in one big swoop, and then scan that instead.
