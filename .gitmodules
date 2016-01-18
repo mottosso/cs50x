@@ -1,0 +1,3 @@
+[submodule "final"]
+	path = final
+	url = https://github.com/mottosso/blur.git
